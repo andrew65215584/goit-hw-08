@@ -30,19 +30,29 @@ refs.modalClose.addEventListener('click', (event) => {
 });
 
 refs.lightBoxOverlay.addEventListener('click', (event) => {
-	refs.modalOpen.classList.remove('is-open');
-
-	console.log(`got it`);
+	if (event.target.nodeName !== 'IMG') {
+		refs.modalOpen.classList.remove('is-open');
+	}
 });
 
-// const ulGallery = document.querySelector('.js-gallery');
+function escapeClose() {
+	if (event.key === 'Escape') {
+		refs.modalOpen.classList.remove('is-open');
+	}
+}
 
-// const lightBox = document.querySelector('.lightbox__image');
-// console.log(lightBox);
+function moveLeft() {
+	if (event.key === 'ArrowLeft') {
+		console.log('key left');
+	}
+}
 
-// const modalOpen = document.querySelector('.js-lightbox');
+function moveRight() {
+	if (event.key === 'ArrowRight') {
+		console.log('key right');
+	}
+}
 
-// const gallery = document.querySelector('.gallery');
-// const modalClose = document.querySelector('.lightbox__button');
-
-// console.log(modalClose);
+window.addEventListener('keyup', escapeClose);
+window.addEventListener('keyup', moveLeft);
+window.addEventListener('keyup', moveRight);
