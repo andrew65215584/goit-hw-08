@@ -16,6 +16,12 @@ galleryItem.map((el) => {
 	);
 });
 
+const increment = function (value) {
+	value++
+}
+
+galleryItem.map(el => el.setAttribute('data-number', increment(0) ))
+
 refs.ulGallery.addEventListener('click', (event) => {
 	event.preventDefault();
 
