@@ -1,7 +1,6 @@
 import galleryItem from './gallery-items.js';
 
 const refs = {
-	gallery: document.querySelector('.gallery'),
 	ulGallery: document.querySelector('.js-gallery'),
 	modalOpen: document.querySelector('.js-lightbox'),
 	modalClose: document.querySelector('.lightbox__button'),
@@ -9,27 +8,33 @@ const refs = {
 	lightBoxOverlay: document.querySelector('.lightbox__content')
 };
 
-galleryItem.map((el) => {
-	refs.gallery.insertAdjacentHTML(
-		'beforeend',
-		`<li class="gallery__item"><a class="gallery__link" href=${el.original}><img class="gallery__image" src=${el.preview} data-source=${el.original} alt=${el.description}/></a></li>`
-	);
-});
+//! создали динамически разметку за одну операцию ------------------------
+galleryItem.forEach((el, index) => (el.index = index));
 
-const increment = function (value) {
-	value++
-}
+const markUpEl = galleryItem
+	.map(
+		(el) =>
+			`<li class="gallery__item"><a class="gallery__link" href=${el.original}><img class="gallery__image" src=${el.preview} data-source=${el.original} data-position=${el.index} alt=${el.description}/></a></li>`
+	)
+	.join(' ');
 
-galleryItem.map(el => el.setAttribute('data-number', increment(0) ))
+refs.ulGallery.insertAdjacentHTML('beforeend', markUpEl);
+
+let activeSlide = 0;
+
+//! Открывает модалку---------------------------------------------
 
 refs.ulGallery.addEventListener('click', (event) => {
 	event.preventDefault();
 
 	refs.modalOpen.classList.add('is-open');
 	refs.lightBox.src = event.target.getAttribute('data-source');
-
+	activeSlide = event.target.dataset.position;
+	console.log(activeSlide);
 	console.log(`ссылка на большую фотку ${event.target.getAttribute('data-source')}`);
 });
+
+//! закрывает модалку---------------------------------------------
 
 refs.modalClose.addEventListener('click', (event) => {
 	refs.modalOpen.classList.remove('is-open');
@@ -41,6 +46,8 @@ refs.lightBoxOverlay.addEventListener('click', (event) => {
 	}
 });
 
+// ! Cлушатели кнопок -------------------------------------------------
+
 function escapeClose() {
 	if (event.key === 'Escape') {
 		refs.modalOpen.classList.remove('is-open');
@@ -49,13 +56,15 @@ function escapeClose() {
 
 function moveLeft() {
 	if (event.key === 'ArrowLeft') {
-		console.log('key left');
+		
+		// refs.lightBox.src = galleryItem[].original;
+		console.log((Number(activeSlide) -= 1));
 	}
 }
 
 function moveRight() {
 	if (event.key === 'ArrowRight') {
-		console.log('key right');
+		refs.lightBox.src = galleryItem[Number(activeSlide) += 1].original;
 	}
 }
 
