@@ -29,7 +29,8 @@ refs.ulGallery.addEventListener('click', (event) => {
 
 	refs.modalOpen.classList.add('is-open');
 	refs.lightBox.src = event.target.getAttribute('data-source');
-	activeSlide = event.target.dataset.position;
+
+	activeSlide = +event.target.dataset.position;
 	console.log(activeSlide);
 	console.log(`ссылка на большую фотку ${event.target.getAttribute('data-source')}`);
 });
@@ -56,15 +57,22 @@ function escapeClose() {
 
 function moveLeft() {
 	if (event.key === 'ArrowLeft') {
-		
-		// refs.lightBox.src = galleryItem[].original;
-		console.log((Number(activeSlide) -= 1));
+		activeSlide--;
+		if (activeSlide < 0) {
+			activeSlide = galleryItem.length - 1;
+		}
+
+		refs.lightBox.src = galleryItem[activeSlide].original;
 	}
 }
 
 function moveRight() {
 	if (event.key === 'ArrowRight') {
-		refs.lightBox.src = galleryItem[Number(activeSlide) += 1].original;
+		activeSlide++;
+		if (activeSlide > galleryItem.length - 1) {
+			activeSlide = 0;
+		}
+		refs.lightBox.src = galleryItem[activeSlide].original;
 	}
 }
 
